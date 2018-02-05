@@ -1,0 +1,210 @@
+import React, {Component} from 'react';
+import {View, Text, Picker, Dimensions, Switch, Alert, StyleSheet} from 'react-native';
+import {Container, Button, Content, Spinner, Thumbnail, Form, Item, Input, CheckBox, Header, Left, Body,Title, Label} from 'native-base';
+import { displayTables, getColData, postData, getRowData, triggerZap } from '../connectServerPages/myAPI';
+
+export default class InsertData extends Component{
+    static navigationOptions={
+        title: 'Insert Data'
+    }
+    constructor(){
+        super();
+       this.state={
+           isLoggedIn: true,
+           fontsAreLoaded: false,
+           isLoading: true,
+           pickerlabel: '',
+           table_names: [],
+           cols_of_sel_tab: [],
+           rowData: [],
+           thisrowData: [],
+           isDataInserted: false,
+           buttonText: 'Insert',
+           validDetails: false,
+           zapRows: [],
+           thiszapRow: [],
+           triggerZap: false
+       }
+    }
+   
+       async componentWillMount(){
+        this.setState({...this.state, fontsAreLoaded: true})
+       }
+       async componentDidMount(){
+        let resp = await displayTables();
+        if(resp.status !== 200){
+            if (resp.status === 504) {
+              Alert.alert("Network Error", "Check your internet connection" )
+            } else {
+              Alert.alert("Error", "Login as admin")      
+            }
+          } else {
+            this.setState({...this.state,isLoading:false});
+            console.log("Response is: " + resp._bodyText);
+            let parsedData = JSON.parse(resp._bodyText);
+            this.setState({...this.state,table_names:parsedData})
+          }
+    }
+    handlePress =({navigation})=>{
+        this.props.navigation.navigate('DrawerOpen')
+    }
+handleSelect = async ()=>{
+    this.setState({...this.state,isLoading:true});
+    let resp = await getColData(this.state.pickerlabel);
+    if(resp.status !== 200){
+        if (resp.status === 504) {
+          Alert.alert("Network Error", "Check your internet connection" )
+        } else {
+          Alert.alert("Error", "Data not available")      
+        }
+      } else {
+        console.log("Response is: " + resp._bodyText);
+         let parsedData = JSON.parse(resp._bodyText);
+        this.setState({cols_of_sel_tab:parsedData})
+        this.setState({thisrowData:[]})
+        let thisrowData = this.state.thisrowData
+        this.state.cols_of_sel_tab.map(
+            col_of_sel=> col_of_sel.table_cols.map(
+                cols=>(thisrowData.push(''))  
+            )
+        )
+        console.log("Initial rowData"+ "1. "+ this.state.rowData)
+        this.setState({...this.state,isLoading:false});
+      }
+    }
+    handleInsertIntoArray = (key,text) =>{
+    
+        console.log("Key" + key + "Text" + text)
+       let newData = this.state.thisrowData
+       newData.splice(key,1,text)
+        this.setState({thisrowData:newData})
+        console.log(this.state.thisrowData)
+    }
+    handleInsertData = async()=>{
+        this.setState({triggerZap: false})
+        let resp = await getRowData(this.state.pickerlabel)
+        if(resp.status !== 200){
+            if (resp.status === 504) {
+              Alert.alert("Network Error", "Check your internet connection" )
+            } else {
+              Alert.alert("Error", "Error")      
+            }
+          } else {
+            let parsedData = JSON.parse(resp._bodyText);
+             this.setState({rowData:parsedData})
+             //push thisrowData to row Data
+            let newData = this.state.rowData[0].row_Data
+            //try rejectig null values //DONE
+           let bool =  this.state.thisrowData.map(
+                (r) => {
+                    console.log(r)
+                    if(r === ''){
+                        return true
+                    }
+                    else{return false}
+                }
+            )
+            console.log(bool[0])
+            if((bool[0].valueOf() === true)  || (this.state.thisrowData.length <= 0))
+            {
+                Alert.alert("Please select a table and insert valid data!")
+                this.setState({validDetails: false})
+                this.setState({triggerZap: false})
+            }
+            else{
+            newData.push(this.state.thisrowData)
+            this.setState({rowData:newData})
+            this.setState({validDetails:true})   
+            }
+            
+        }
+          //Deal data doesnt exist
+        //get entire row data and append and then post
+
+
+         resp = await postData(this.state.pickerlabel,this.state.rowData)
+        if(resp.status !== 200){
+            if (resp.status === 504) {
+              Alert.alert("Network Error", "Check your internet connection" )
+            } else {
+              Alert.alert("Error", "Failed to Insert Data")      
+            }
+          } else {
+              if(this.state.validDetails)
+              {
+                Alert.alert("One row affected")
+                this.setState({triggerZap: true})
+              this.setState({isDataInserted:true})
+              this.setState({buttonText: 'Insert Again'})
+              }
+              
+          }
+        if(this.state.triggerZap)
+        {
+            this.handletriggerZap
+        }  
+    }
+    handletriggerZap = () =>
+    {
+        //Enter data using CreateRow endpoint and give an Alert saying Zap id triggered!
+    }
+    render(){
+        
+        if(this.state.isLoading === true)
+        {
+            return(<View style={{flex: 1, paddingTop: 20}}>
+            <Spinner color='blue'/>
+            </View>)
+        }
+        if(this.state.fontsAreLoaded === true){
+            if(this.state.isLoggedIn === true){
+        return(
+            <Container>
+            <Header>
+                <Left>
+                <Button transparent onPress={this.handlePress}>
+                <Thumbnail size={16} source={{uri:'https://i.pinimg.com/736x/7c/09/06/7c090686c035c36a78f17d6955ae6980--film-avatar-movie-photo.jpg'}}/>
+                </Button>
+                </Left>
+                <Body>
+                    <Title> Welcome Name </Title>
+                    </Body>
+                </Header>
+                <Content style={{margin:20}}>
+                <Picker
+                    selectedValue={this.state.pickerlabel}
+                    onValueChange={(itemValue, itemIndex) => {if (itemValue!=0){this.setState({pickerlabel: itemValue})}else{Alert.alert("Please select a value!")}       }        }>
+                    <Picker.Item label="Please select the table" value="0"/>
+                    
+                    {   this.state.table_names.map((table, key)=>(
+                            <Picker.Item label={table.table_name} value={table.table_name} key={key}/>)
+                        )
+                    }
+                </Picker>
+                <Button style={{alignSelf:'center'}}onPress={this.handleSelect}><Text> Select </Text></Button>
+                 <Text style={{ flex: 1, justifyContent: 'center',  alignContent: 'center', alignSelf:'center'}}>{this.state.pickerlabel}</Text>
+                {  
+                this.state.cols_of_sel_tab.map(
+                    (col_of_sel) =>( col_of_sel.table_cols.map(
+                        (cols,key) => (
+                            //console.log("HI I AM HERE" + this.state.thisrowData),
+                         this.state.thisrowData.map(
+                         (val,id)=>{
+                             console.log("In loop " + id + "Key " + key)
+                                 if (key === id){
+                                 return <Input key={id} style={{borderBottomWidth:2,borderBottomColor:'black'}} placeholder={cols} value={val} onChangeText={(text)=>this.handleInsertIntoArray(key,text)}/>;
+                                 }
+                                 }))                   
+                                ) 
+                            ))
+            }
+             <Button style={{alignSelf:'center'}} onPress={this.handleInsertData}> 
+                <Text>{this.state.buttonText}</Text></Button> 
+                </Content>
+            </Container>
+        );
+    }
+}
+    }
+} 
+

@@ -1,0 +1,7 @@
+- args:
+    sql: CREATE TABLE "Tables"("table_name" text NOT NULL, "table_cols" json NOT NULL,
+      PRIMARY KEY ("table_name") )
+  type: run_sql
+- args:
+    name: Tables
+  type: add_existing_table_or_view

@@ -1,4 +1,5 @@
-## MyWonderfulApp
+
+#MyWonderfulApp
 
 This is a fully working react-native app with a Hasura backend.When you clone this project, there are two tables (Tables and Data) in your database populated with some data. This project also has a login screen and the functions in the app make data API calls to the backend.
 

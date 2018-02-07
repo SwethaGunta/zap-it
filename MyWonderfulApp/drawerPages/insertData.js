@@ -42,8 +42,8 @@ export default class InsertData extends Component{
           } else {            
             console.log("Response is: " + resp._bodyText)
             let parsedData = JSON.parse(resp._bodyText)
-            this.setState({...this.state,isLoading:false})
-            this.setState({...this.state,table_names:parsedData})
+            this.setState({isLoading:false})
+            this.setState({table_names:parsedData,pickerlabel: ''})
             
           }
     }

@@ -1,0 +1,3 @@
+- args:
+    sql: ALTER TABLE "Data" ADD FOREIGN KEY ("table_name") REFERENCES "Tables" ("table_name")
+  type: run_sql

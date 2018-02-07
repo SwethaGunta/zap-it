@@ -1,0 +1,7 @@
+- alias: zap-it
+  config:
+    configmap: controller-conf
+    namespace: bungalow55-hasura
+  data: null
+  kubeContext: bungalow55
+  name: bungalow55

@@ -106,7 +106,7 @@ render(){
                         )
                     }
                 </Picker>
-                <Button onPress={this.handleDelete}><Text> Delete</Text></Button>
+                <Button style={{alignSelf:'center'}} onPress={this.handleDelete}><Text> Delete</Text></Button>
                   </Content>
                   </Container>
         )

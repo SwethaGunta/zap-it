@@ -4,24 +4,20 @@ import {StackNavigator, DrawerNavigator} from 'react-navigation';
 import {TouchableHighlight} from 'react-native';
 import { Button, Thumbnail } from 'native-base';
 import Login from './pages/loginPage';
-import EditTable from './drawerPages/editTable';
 import CreateTable from './drawerPages/createTable';
+import EditTable from './drawerPages/editTable';
 import InsertData from './drawerPages/insertData';
 import DeleteTable from './drawerPages/deleteTable';
 
 
 const DrawerScreens = DrawerNavigator({
-  createTable: {screen: CreateTable},
-  edit: {screen: EditTable,
-   navigationOptions: (({navigation})=>{
-     <EditTable navigation={navigation}/>
-   })
- },
+createTable: {screen: CreateTable},
+ editTable: {screen: EditTable},
  insertData: {screen: InsertData},
  deleteTable: {screen: DeleteTable}
   }  ,
 {
-  initialRouteName: 'edit',
+  initialRouteName: 'editTable',
   headerMode: 'none'
 });
 

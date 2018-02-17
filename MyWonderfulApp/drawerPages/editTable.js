@@ -1,23 +1,38 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableNativeFeedback, TouchableOpacity} from 'react-native';
+import {View, Text, Alert} from 'react-native';
 import {Container, Content, List, ListItem, Thumbnail, Button, Header, Body, Title, Left} from 'native-base';
-import {DrawerScreens} from '../router';
-import { NavigationActions } from 'react-navigation';
+import {displayTables} from '../connectServerPages/myAPI';
 
 export default class EditTable extends Component{
      static navigationOptions={
          title: 'Edit Table'
      }
-    
     constructor(){
          super();
         this.state={
             isLoggedIn: true,
-            fontsAreLoaded: false
+            fontsAreLoaded: false,
+            isLoading: true,
+            table_names: []
         }
     }
     async componentWillMount(){
         this.setState({...this.state, fontsAreLoaded: true})
+    }
+    async componentDidMount(){
+        let resp = await displayTables();
+        if(resp.status !== 200){
+            if (resp.status === 504) {
+              Alert.alert("Network Error", "Check your internet connection" )
+            } else {
+              Alert.alert("Error", "Check the error")      
+            }
+          } else {
+            this.setState({...this.state,isLoading:false});
+            console.log("Response is: " + resp._bodyText);
+            let parsedData = JSON.parse(resp._bodyText);
+            this.setState({table_names:parsedData})
+          }
     }
     handlePress = ({navigation})=>{    
         //   const navigateAction = NavigationActions.navigate({
@@ -46,22 +61,20 @@ export default class EditTable extends Component{
                             </Header>
                       <Content>
                         <Text style={{
-                            justifyContent: 'center',
-                            alignContent: 'center'
+                           alignSelf: 'center'
                         }}>
                             List of Tables
                         </Text>
                         <List>
-                          <ListItem>
-                            <Text>Table 1</Text>
-                          </ListItem>
-                          <ListItem>
-                            <Text>Table 2</Text>
-                          </ListItem>
-                          <ListItem>
-                            <Text>Table 3</Text>
-                          </ListItem>
+                            {
+                                this.state.table_names.map(
+                                    (table,key)=>{
+                                        return <ListItem key={key}><Text key={key}>{table.table_name}</Text></ListItem>
+                                    }
+                                )
+                            }
                         </List>
+                            
                       </Content>
                     </Container>
                 )

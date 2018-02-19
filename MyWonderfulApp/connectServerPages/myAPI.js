@@ -17,8 +17,7 @@ export async function tryLogin(username, password) {
     let requestOptions = {
       "method": "POST",
       "headers":{
-        "Content-Type":"application/json",
-        "Authorization": "b5b4bfc4d66ac328a34cef18dd95f223a15cb9d0f5e498f5"
+        "Content-Type":"application/json"
       }
     };
   
@@ -253,7 +252,7 @@ export async function tryLogin(username, password) {
   }
 
   
-  export async function createTable(tableName)
+  export async function createTable(tableName,tableCols)
   {
     console.log('Making Data query for Create');
     let requestOptions = {
@@ -264,7 +263,25 @@ export async function tryLogin(username, password) {
         "X-Hasura-Role":"admin"    
       }
     };
-    let body = 
+    let body = {
+      "type": "insert",
+      "args": {
+          "table": "Tables",
+          "objects": [
+              {
+                  "table_name": tableName,
+                  "table_cols": tableCols
+              }
+          ],
+          "on_conflict": {
+              "action": "update",
+              "constraint_on": [
+                  "table_name"
+              ]
+          }
+      }
+  }
+
   requestOptions["body"] = JSON.stringify(body);
   console.log("Data Response from Create -----------------------");
   try {
@@ -301,9 +318,6 @@ export async function tryLogin(username, password) {
          },
          "body": body
     }
-  
-
-    
     //requestOptions["body"] = JSON.stringify(body); 
   console.log(requestOptions.body)
   console.log("Data Response from Zap -----------------------");

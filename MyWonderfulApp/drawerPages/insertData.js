@@ -43,8 +43,7 @@ export default class InsertData extends Component{
             console.log("Response is: " + resp._bodyText)
             let parsedData = JSON.parse(resp._bodyText)
             this.setState({isLoading:false})
-            this.setState({table_names:parsedData,pickerlabel: ''})
-            
+            this.setState({table_names:parsedData,pickerlabel: ''}) 
           }
     }
     handlePress =({navigation})=>{
@@ -73,21 +72,18 @@ handleSelect = async ()=>{
                 cols=>(thisrowData.push(''))  
             )
         )
-        
         console.log("Initial rowData"+ "1. "+ this.state.rowData)
         this.setState({isLoading:false,thisrowData:thisrowData});
       }
     }
     handleInsertIntoArray = (key,text) =>{
-    
-        console.log("Key" + key + "Text" + text)
+       console.log("Key" + key + "Text" + text)
        let newData = this.state.thisrowData
        newData.splice(key,1,text)
         this.setState({thisrowData:newData})
         console.log(this.state.thisrowData)
     }
-    handleInsertData = async()=>{
-        
+    handleInsertData = async()=>{ 
         let resp = await getRowData(this.state.pickerlabel)
         if(resp.status !== 200){
             if (resp.status === 504) {
@@ -128,10 +124,9 @@ handleSelect = async ()=>{
             newData.push(this.state.thisrowData)
             this.setState({rowData:newData})
             this.setState({validDetails:true})   
-            }
+                }
             }
                     }
-
          resp = await postData(this.state.pickerlabel,this.state.rowData)
         if(resp.status !== 200){
             if (resp.status === 504) {
@@ -156,17 +151,12 @@ handleSelect = async ()=>{
             Alert.alert("Data Saved and Zap triggered!")
             this.setState({triggerZap: false})
             }
-       
-
               this.setState({isDataInserted:true})
               this.setState({buttonText: 'Insert Again'})
-              }
-              
+              }   
           }
-         
     }
     render(){
-        
         if(this.state.isLoading === true)
         {
             return(<View style={{flex: 1, paddingTop: 20}}>

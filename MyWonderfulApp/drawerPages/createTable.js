@@ -8,7 +8,6 @@ export default class CreateTable extends Component{
     static navigationOptions={
         title: 'Create Table'
     }
-   
     constructor(){
         super();
        this.state={
@@ -23,6 +22,7 @@ export default class CreateTable extends Component{
    }
 handleTableNameChange = (text)=>{
     this.setState({tableNameText:text})
+    console.log("TABLE NAME: "+this.state.tableNameText)
 }
 handleColNameChange = (text,index,subindex) => {
     let newcolNamesAndFeatures=this.state.colNamesAndFeatures
@@ -36,8 +36,8 @@ handleColNameChange = (text,index,subindex) => {
                     return eachCol
                 }
             }
-        
     )
+    console.log("In Handle Col name Change" + newcolNamesAndFeatures)
     this.setState({colNamesAndFeatures:newcolNamesAndFeatures})
 }
 handlePickerValueChange = (itemValue,index,subindex) =>
@@ -55,6 +55,7 @@ handlePickerValueChange = (itemValue,index,subindex) =>
             }
         
     )
+    console.log("In Handle Picker value Change" + newcolNamesAndFeatures)
     this.setState({colNamesAndFeatures:newcolNamesAndFeatures})
 }
 handleCheckboxChange = (bool,index,subindex) =>
@@ -72,6 +73,7 @@ handleCheckboxChange = (bool,index,subindex) =>
             }
         
     )
+    console.log("In Handle CheckBox Change" + newcolNamesAndFeatures)
     this.setState({colNamesAndFeatures:newcolNamesAndFeatures}) 
 }
 handleDefaultChange = (text,index,subindex) => {
@@ -88,9 +90,9 @@ handleDefaultChange = (text,index,subindex) => {
             }
         
     )
+    console.log("In Handle Default Change" + newcolNamesAndFeatures)
     this.setState({colNamesAndFeatures:newcolNamesAndFeatures})
 }
-
 handlePress = ({navigation})=>{    
     //   const navigateAction = NavigationActions.navigate({
     //     routeName: "DrawerOpen",
@@ -99,7 +101,34 @@ handlePress = ({navigation})=>{
     //   this.props.navigation.dispatch(navigateAction);
       this.props.navigation.navigate("DrawerOpen");
 }
+handleCreateTablePress = async() =>
+{
+    let tableName = this.state.tableNameText
+    if(tableName === '' || !(isNaN(tableName)))
+    {
+        Alert.alert("Table Name cannot be empty!")
+    }
+    else{
+    let resp = await createTable(this.state.tableNameText,this.state.colNamesAndFeatures)
+    if(resp.status !== 200){
+        if (resp.status === 504) {
+          Alert.alert("Network Error", "Check your internet connection" )
+        } else {
+          Alert.alert("Error", "Cannot give access")      
+        }
+      } else {            
+        Alert.alert("Table successfully created !")
+      }
+    }
+}
+handleAddColumnPress = ()=>{
+    let newcolNamesAndFeatures = this.state.colNamesAndFeatures
+    let emptyList = []
+    emptyList.length = 4
+    newcolNamesAndFeatures.push(emptyList)
+    this.setState({colNamesAndFeatures:newcolNamesAndFeatures})
 
+}
     render(){
         if(this.state.isLoading === true)
         {
@@ -124,15 +153,16 @@ handlePress = ({navigation})=>{
                     <Content contentContainerStyle={{alignItems:'center'}}>
                     <Text style={{
                             justifyContent: 'center',
-                            alignContent: 'flex-start'
+                            alignContent: 'flex-start',
+                            padding: 10
                         }}> Create Table </Text>
-                         <Form>
-                            <Item floatingLabel>
+                         
+                            <Item floatingLabel >
                              <Label> Table Name </Label>
-                             <Input value= {this.state.tableNameText} onChangeText={(text)=>this.handleTableNameChange(text)}/>
+                             <Input style={{padding: 10}} value= {this.state.tableNameText} onChangeText={(text)=>this.handleTableNameChange(text)}/>
                             </Item>
-
-                            {this.state.colNamesAndFeatures.map(
+                            {
+                                this.state.colNamesAndFeatures.map(
                                 (eachCol,index)=> eachCol.map(
                                     (colFeatures) =>  {
                                         return(
@@ -149,10 +179,12 @@ handlePress = ({navigation})=>{
                                             </View>
                                         )
                                     }                                      
-                                   
-                                    
                                 ))}
-                        </Form>
+
+                        <View style={{flexDirection:'row',alignItems:'center',padding:10}}>
+                        <Button onPress={this.handleCreateTablePress}><Text> Create Table </Text></Button>
+                        <Button onPress={this.handleAddColumnPress}><Text> Add Column </Text></Button>
+                                </View>
                     </Content>
                     </Container>
         );

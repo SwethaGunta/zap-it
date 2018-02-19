@@ -1,3 +1,3 @@
 import { AppRegistry } from 'react-native';
-import EditTable from './drawerPages/editTable';
-AppRegistry.registerComponent('MyWonderfulApp', () => EditTable);
+import CreateTable from './drawerPages/createTable';
+AppRegistry.registerComponent('MyWonderfulApp', () => CreateTable);

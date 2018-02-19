@@ -1,14 +1,19 @@
-FROM mhart/alpine-node:7.6.0
+FROM node:8
 
-WORKDIR /src
+#Alpine APK Manager had build issues so replaced them.
+RUN apt-get update && apt-get install -y build-essential python
 
-# Add package.json
-ADD app/src/package.json /src/package.json
+#Install deps
+RUN mkdir /app
+COPY app/package.json /app/package.json
+RUN cd /app && npm install
 
-#install node modules
-RUN npm install
+#Add all source code
+ADD app /app/
+RUN cd /app && npm run build
+RUN npm -g install serve
 
-#Add the source code
-ADD app/src /src
+WORKDIR /app
 
-CMD ["node", "server.js"]
+#Default command
+CMD ["serve", "-s", "build", "-p", "8080"]

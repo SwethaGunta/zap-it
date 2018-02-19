@@ -30,3 +30,14 @@ remotes:
         dockerfile: microservices/zapui/Dockerfile
         path: microservices/zapui
 
+
+zapui:
+  /:
+    corsPolicy: allow_all
+    upstreamService:
+      name: zapui
+      namespace: '{{ cluster.metadata.namespaces.user }}'
+    upstreamServicePath: /
+    upstreamServicePort: 80
+
+

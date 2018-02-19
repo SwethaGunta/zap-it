@@ -182,3 +182,14 @@ zapui:
     upstreamServicePort: 80
 
 
+
+zapui:
+  /:
+    corsPolicy: allow_all
+    upstreamService:
+      name: zapui
+      namespace: '{{ cluster.metadata.namespaces.user }}'
+    upstreamServicePath: /
+    upstreamServicePort: 80
+
+

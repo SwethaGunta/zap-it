@@ -123,11 +123,8 @@ handleCreateTablePress = async() =>
 }
 handleAddColumnPress = ()=>{
     let newcolNamesAndFeatures = this.state.colNamesAndFeatures
-    let emptyList = []
-    emptyList.length = 4
-    newcolNamesAndFeatures.push(emptyList)
+    newcolNamesAndFeatures.apply(null,{length:4})
     this.setState({colNamesAndFeatures:newcolNamesAndFeatures})
-
 }
     render(){
         if(this.state.isLoading === true)

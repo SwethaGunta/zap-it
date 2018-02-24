@@ -14,7 +14,10 @@ export default class CreateTable extends Component{
            isLoggedIn: true,
            fontsAreLoaded: false,
            tableNameText: '',
-           colNamesAndFeatures: []
+           colNamesAndFeatures: [],
+           inp: 'HELLO',
+           trial: [],
+           pickerLabel: ''
        }
    }
    async componentWillMount(){
@@ -24,75 +27,70 @@ handleTableNameChange = (text)=>{
     this.setState({tableNameText:text})
     console.log("TABLE NAME: "+this.state.tableNameText)
 }
-handleColNameChange = (text,index,subindex) => {
-    let newcolNamesAndFeatures=this.state.colNamesAndFeatures
+handleColNameChange = (text,index) => {
+    let newcolNamesAndFeatures = this.state.colNamesAndFeatures
     newcolNamesAndFeatures.map(
         (eachCol,itsIndex) => { 
-                if(index === itsindex)
+                if(index === itsIndex)
                 {
-                    let colinfo = eachCol[itsIndex]
-                    colinfo.splice(subindex,1,text)
-                    eachCol[itsIndex] = colinfo
-                    return eachCol
+                    let colinfo = this.state.colNamesAndFeatures
+                    colinfo.splice(index,1,text)
+                    return colinfo
                 }
             }
     )
-    console.log("In Handle Col name Change" + newcolNamesAndFeatures)
     this.setState({colNamesAndFeatures:newcolNamesAndFeatures})
 }
-handlePickerValueChange = (itemValue,index,subindex) =>
-{
-    let newcolNamesAndFeatures=this.state.colNamesAndFeatures
-    newcolNamesAndFeatures.map(
-        (eachCol,itsIndex) => { 
-                if(index === itsindex)
-                {
-                    let colinfo = eachCol[itsIndex]
-                    colinfo.splice(subindex,1,itemValue)
-                    eachCol[itsIndex] = colinfo
-                    return eachCol
-                }
-            }
+// handlePickerValueChange = (itemValue,index,subindex) =>
+// {
+//     let newcolNamesAndFeatures=this.state.colNamesAndFeatures
+//     newcolNamesAndFeatures.map(
+//         (eachCol,itsIndex) => { 
+//                 if(index === itsIndex)
+//                 {
+//                     let colinfo = eachCol[itsIndex]
+//                     colinfo.splice(subindex,1,itemValue)
+//                     eachCol[itsIndex]= colinfo
+//                 }
+//             }
         
-    )
-    console.log("In Handle Picker value Change" + newcolNamesAndFeatures)
-    this.setState({colNamesAndFeatures:newcolNamesAndFeatures})
-}
-handleCheckboxChange = (bool,index,subindex) =>
-{
-    let newcolNamesAndFeatures=this.state.colNamesAndFeatures
-    newcolNamesAndFeatures.map(
-        (eachCol,itsIndex) => { 
-                if(index === itsindex)
-                {
-                    let colinfo = eachCol[itsIndex]
-                    colinfo.splice(subindex,1,bool)
-                    eachCol[itsIndex] = colinfo
-                    return eachCol
-                }
-            }
+//     )
+//     console.log("In Handle Picker value Change" + newcolNamesAndFeatures)
+//     this.setState({colNamesAndFeatures:newcolNamesAndFeatures})
+// }
+// handleCheckboxChange = (bool,index,subindex) =>
+// {
+//     let newcolNamesAndFeatures=this.state.colNamesAndFeatures
+//     newcolNamesAndFeatures.map(
+//         (eachCol,itsIndex) => { 
+//                 if(index === itsIndex)
+//                 {
+//                     let colinfo = eachCol[itsIndex]
+//                     colinfo.splice(subindex,1,bool)
+//                     eachCol[itsIndex] = colinfo
+//                 }
+//             }
         
-    )
-    console.log("In Handle CheckBox Change" + newcolNamesAndFeatures)
-    this.setState({colNamesAndFeatures:newcolNamesAndFeatures}) 
-}
-handleDefaultChange = (text,index,subindex) => {
-    let newcolNamesAndFeatures=this.state.colNamesAndFeatures
-    newcolNamesAndFeatures.map(
-        (eachCol,itsIndex) => { 
-                if(index === itsindex)
-                {
-                    let colinfo = eachCol[itsIndex]
-                    colinfo.splice(subindex,1,text)
-                    eachCol[itsIndex] = colinfo
-                    return eachCol
-                }
-            }
+//     )
+//     console.log("In Handle CheckBox Change" + newcolNamesAndFeatures)
+//     this.setState({colNamesAndFeatures:newcolNamesAndFeatures}) 
+// }
+// handleDefaultChange = (text,index,subindex) => {
+//     let newcolNamesAndFeatures=this.state.colNamesAndFeatures
+//     newcolNamesAndFeatures.map(
+//         (eachCol,itsIndex) => { 
+//                 if(index === itsIndex)
+//                 {
+//                     let colinfo = eachCol[itsIndex]
+//                     colinfo.splice(subindex,1,text)
+//                     eachCol[itsIndex] = colinfo
+//                 }
+//             }
         
-    )
-    console.log("In Handle Default Change" + newcolNamesAndFeatures)
-    this.setState({colNamesAndFeatures:newcolNamesAndFeatures})
-}
+//     )
+//     console.log("In Handle Default Change" + newcolNamesAndFeatures)
+//     this.setState({colNamesAndFeatures:newcolNamesAndFeatures})
+// }
 handlePress = ({navigation})=>{    
     //   const navigateAction = NavigationActions.navigate({
     //     routeName: "DrawerOpen",
@@ -123,7 +121,7 @@ handleCreateTablePress = async() =>
 }
 handleAddColumnPress = ()=>{
     let newcolNamesAndFeatures = this.state.colNamesAndFeatures
-    newcolNamesAndFeatures.apply(null,{length:4})
+    newcolNamesAndFeatures.push('')
     this.setState({colNamesAndFeatures:newcolNamesAndFeatures})
 }
     render(){
@@ -158,24 +156,15 @@ handleAddColumnPress = ()=>{
                              <Label> Table Name </Label>
                              <Input style={{padding: 10}} value= {this.state.tableNameText} onChangeText={(text)=>this.handleTableNameChange(text)}/>
                             </Item>
+                            
                             {
                                 this.state.colNamesAndFeatures.map(
-                                (eachCol,index)=> eachCol.map(
-                                    (colFeatures) =>  {
-                                        return(
-                                            <View key={index} style={{flexDirection: 'row'}}>
-                                            <Input key={0} style= {{width:0.35*screen_width}}  value={colFeatures[0]} onChangeText={(text)=>this.handleColNameChange(text,index,0)} />
-                                            <Picker key={1} style= {{width:0.25*screen_width}}  selectedValue={colFeatures[1]} onValueChange={(itemValue)=>this.handlePickerValueChange(itemValue,index,1)}>
-                                                <Picker.Item label="Integer" value="int" />
-                                                <Picker.Item label="Text" value="txt" />
-                                                <Picker.Item label="Numeric" value="num" />
-                                                <Picker.Item label="Date" value="dt" />
-                                            </Picker>
-                                            <CheckBox key={2} style= {{width:0.15*screen_width}} checked={colFeatures[2]} onPress={(bool)=>this.handleCheckboxChange(bool,index,2)}/>
-                                            <Input key={3} style= {{width:0.25*screen_width}} value={colFeatures[3]} onChangeText={(text)=>this.handleDefaultChange(text,index,3)}/>
+                                (eachColName,index)=>   (
+                                        <View key={index} style={{flexDirection: 'row'}}>
+                                             <Input key={index} placeholder={"Enter column Name"} style= {{width:0.35*screen_width}}  value={eachColName} onChangeText={(text)=>this.handleColNameChange(text,index)}/>
                                             </View>
-                                        )
-                                    }                                      
+                                    
+                                                                                                               
                                 ))}
 
                         <View style={{flexDirection:'row',alignItems:'center',padding:10}}>

@@ -180,7 +180,7 @@ handleSelect = async ()=>{
                 <Content style={{margin:20}}>
                 <Picker
                     selectedValue={this.state.pickerlabel}
-                    onValueChange={(itemValue, itemIndex) => {if (itemValue!=0){this.setState({pickerlabel: itemValue})}else{Alert.alert("Please select a value!")}       }        }>
+                    onValueChange={(itemValue, itemIndex) => {if (itemValue!=0){this.setState({pickerlabel: itemValue})}else{Alert.alert("Please select a value!")}   }        }>
                     <Picker.Item label="Please select the table" value="0"/>
                     
                     {   this.state.table_names.map((table, key)=>(

@@ -331,3 +331,37 @@ export async function tryLogin(username, password) {
     return networkErrorObj;
   }
   }
+
+  export async function registerUser(userName,password,emailId)
+  {
+    console.log('Making Data query for Register');
+    let requestOptions = {
+      "method": "POST",
+      "headers": {
+        "Content-Type":"application/json",
+        "Authorization":"Bearer 1ae2b575387e2f7fe6256ebce78488457bc210a171ec7e11",
+        "X-Hasura-Role":"admin"    
+      }
+    };
+    let body = {
+      "provider": "username",
+      "data": {
+          "username": userName,
+          "password": password,
+          "email": emailId
+      }
+  }
+  requestOptions["body"] = JSON.stringify(body);
+  console.log("Data Response from Register -----------------------");
+  try {
+    console.log("Request Options Headers are: "+ requestOptions.headers.Authorization);
+    console.log("Request Options Body are: "+ requestOptions.body);
+    let resp = await fetch(dataUrl, requestOptions);
+    console.log(resp);
+    return resp; 
+  }
+  catch(e) {
+    console.log("Request Failed: " + e);
+    return networkErrorObj;
+  }
+  }

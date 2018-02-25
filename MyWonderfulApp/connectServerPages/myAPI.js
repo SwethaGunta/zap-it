@@ -356,7 +356,7 @@ export async function tryLogin(username, password) {
   try {
     console.log("Request Options Headers are: "+ requestOptions.headers.Authorization);
     console.log("Request Options Body are: "+ requestOptions.body);
-    let resp = await fetch(dataUrl, requestOptions);
+    let resp = await fetch(signupUrl, requestOptions);
     console.log(resp);
     return resp; 
   }

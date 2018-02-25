@@ -1,0 +1,9 @@
+- args:
+    sql: ALTER TABLE "Tables" ALTER COLUMN "table_cols" TYPE json;
+  type: run_sql
+- args:
+    sql: ALTER TABLE "Tables" ALTER COLUMN "table_cols" DROP DEFAULT;
+  type: run_sql
+- args:
+    sql: ALTER TABLE "Tables" ALTER COLUMN "table_cols" DROP NOT NULL;
+  type: run_sql

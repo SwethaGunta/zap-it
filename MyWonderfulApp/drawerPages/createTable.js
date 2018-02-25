@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, Picker, Dimensions, Switch, Alert, StyleSheet} from 'react-native';
-import {Container, Button, Content, Spinner, Thumbnail, Form, Item, Input, CheckBox, Header, Left, Body,Title, Label} from 'native-base';
+import {Container, Button, Content, Spinner, Thumbnail, Right, Form, Item, Input, CheckBox, Header, Left, Body,Title, Label} from 'native-base';
 import { createTable } from '../connectServerPages/myAPI';
 
 const screen_width= Dimensions.get('window').width
@@ -97,7 +97,11 @@ handlePress = ({navigation})=>{
     //     params: {}
     //   })
     //   this.props.navigation.dispatch(navigateAction);
-      this.props.navigation.navigate("DrawerOpen");
+      this.props.navigation.navigate("DrawerOpen",{login_user:this.props.navigation.state.params.login_user});
+}
+handleLogout = ()    =>
+{
+    this.props.navigation.navigate('loginScreen')
 }
 handleCreateTablePress = async() =>
 {
@@ -125,6 +129,8 @@ handleAddColumnPress = ()=>{
     this.setState({colNamesAndFeatures:newcolNamesAndFeatures})
 }
     render(){
+        const {params}  = this.props.navigation.state
+        const login_user = params ? params.login_user : null
         if(this.state.isLoading === true)
         {
             return(<View style={{flex: 1, paddingTop: 20}}>
@@ -142,8 +148,11 @@ handleAddColumnPress = ()=>{
                 </Button>
                 </Left>
                 <Body>
-                    <Title> Welcome Name </Title>
+                    <Title> Welcome {login_user}</Title>
                     </Body>
+                    <Right>
+                        <Button transparent onPress={this.handleLogout}><Text>Logout</Text></Button>
+                    </Right>
                 </Header>
                     <Content contentContainerStyle={{alignItems:'center'}}>
                     <Text style={{

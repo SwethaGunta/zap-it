@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {View, Text, Alert} from 'react-native';
-import {Container, Content, List, ListItem, Thumbnail, Button, Header, Body, Title, Left} from 'native-base';
+import {Container, Content, List, ListItem, Thumbnail, Button, Header, Body, Title, Right, Left, Spinner} from 'native-base';
 import {displayTables} from '../connectServerPages/myAPI';
 
 export default class EditTable extends Component{
      static navigationOptions={
-         title: 'Edit Table'
+         title: 'Edit Table',
+       
      }
     constructor(){
          super();
@@ -40,9 +41,15 @@ export default class EditTable extends Component{
         //     params: {}
         //   })
         //   this.props.navigation.dispatch(navigateAction);
-          this.props.navigation.navigate("DrawerOpen");
+          this.props.navigation.navigate("DrawerOpen",{login_user:this.props.navigation.state.params.login_user});
     }
-    render() {        
+    handleLogout = ()    =>
+{
+    this.props.navigation.navigate('loginScreen')
+}
+    render() { 
+        const {params}  = this.props.navigation.state
+        const login_user = params ? params.login_user : null
         if(this.state.fontsAreLoaded === true){
             if(this.state.isLoggedIn === true){
                 return (
@@ -55,9 +62,12 @@ export default class EditTable extends Component{
                             </Left>
                             <Body>
                                 <Title>
-                                    Welcome name!
+                                   Welcome {login_user}
                                 </Title>
                                 </Body>
+                                <Right>
+                        <Button transparent onPress={this.handleLogout}><Text>Logout</Text></Button>
+                    </Right>
                             </Header>
                       <Content>
                         <Text style={{

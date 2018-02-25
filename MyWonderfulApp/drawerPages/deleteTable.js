@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {View,Text, Alert, Picker, Switch, Dimensions} from 'react-native';
-import {Container, Button, Content, Spinner, Thumbnail, Form, Item, Input, CheckBox, Header, Left, Body,Title, Label} from 'native-base';
-import { displayTables,deleteTable } from '../connectServerPages/myAPI';
+import {View,Text, Alert, Picker} from 'react-native';
+import {Container, Button, Content, Spinner, Thumbnail, Right,Form, Item, Input, CheckBox, Header, Left, Body,Title, Label} from 'native-base';
+import { displayTables, deleteTable } from '../connectServerPages/myAPI';
 
 export default class DeleteTable extends Component{
     constructor(){
@@ -35,8 +35,9 @@ export default class DeleteTable extends Component{
             this.setState({...this.state,table_names:parsedData})
           }
     }
-    async componentWillUpdate(){
-        let resp = await displayTables();
+    // Problem here
+    async componentDidUpdate(){
+        let  resp = await displayTables();
         if(resp.status !== 200){
             if (resp.status === 504) {
               Alert.alert("Network Error", "Check your internet connection" )
@@ -49,10 +50,9 @@ export default class DeleteTable extends Component{
             let parsedData = JSON.parse(resp._bodyText);
             this.setState({...this.state,table_names:parsedData})
           }
-
     }
     handleDelete = async ()=>{
-        this.setState({...this.state,isLoading:true});
+        //this.setState({isLoading:true});
         let resp = await deleteTable(this.state.pickerlabel);
         if(resp.status !== 200){
             if (resp.status === 504) {
@@ -62,8 +62,7 @@ export default class DeleteTable extends Component{
             }
           } else {
             Alert.alert("Table " + this.state.pickerlabel + "successfully deleted")
-            this.setState({...this.state,isLoading:false});
-            
+            this.setState({isLoading:false})
           }
         }
         handlePress = ({navigation})=>{    
@@ -72,9 +71,15 @@ export default class DeleteTable extends Component{
             //     params: {}
             //   })
             //   this.props.navigation.dispatch(navigateAction);
-              this.props.navigation.navigate("DrawerOpen");
+              this.props.navigation.navigate("DrawerOpen",{login_user:this.props.navigation.state.params.login_user});
         }
+handleLogout = ({navigation})    =>
+    {
+    this.props.navigation.navigate('loginScreen')
+    }
 render(){
+    const {params}  = this.props.navigation.state
+        const login_user = params ? params.login_user : null
     if(this.state.isLoading === true)
         {
             return(<View style={{flex: 1, paddingTop: 20}}>
@@ -92,8 +97,11 @@ render(){
                 </Button>
                 </Left>
                 <Body>
-                    <Title> Welcome Name </Title>
+                    <Title> Welcome {login_user} </Title>
                     </Body>
+                    <Right>
+                        <Button transparent onPress={this.handleLogout}><Text>Logout</Text></Button>
+                    </Right>
                 </Header>
                 <Content>
                 <Picker
@@ -106,7 +114,8 @@ render(){
                         )
                     }
                 </Picker>
-                <Button style={{alignSelf:'center'}} onPress={this.handleDelete}><Text> Delete</Text></Button>
+                <Text>{this.state.pickerlabel}</Text>
+                <Button style={{alignSelf:'center'}} onPress={this.handleDelete}><Text>Delete</Text></Button>
                   </Content>
                   </Container>
         )

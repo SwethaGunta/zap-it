@@ -33,7 +33,7 @@ export default class SignUpPage extends Component {
         let password_bool = this.state.passwordText.toString().match('[a-zA-Z0-9@#$%&*!]')
         let emailId_bool = this.state.emailIdText.toString().match('[a-zA-Z0-9_.]@[a-z]+\.[a-z]{3}$')
         
-        if((userName_bool) && (password_bool) && (emailId_bool))
+            if((userName_bool) && (password_bool) && (emailId_bool))
             {
                 this.setState({canRegister:true})
             }
@@ -42,7 +42,7 @@ export default class SignUpPage extends Component {
                 this.setState({canRegister:false})
             }
         
-        if(this.state.canRegister === true)
+            if(this.state.canRegister === true)
                 {
             let resp = await registerUser(this.state.userNameText,this.state.passwordText,this.state.emailIdText)
             if(resp.status !== 200){

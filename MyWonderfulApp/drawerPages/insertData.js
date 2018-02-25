@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, Picker, Dimensions, Switch, Alert, StyleSheet} from 'react-native';
-import {Container, Button, Content, Spinner, Thumbnail, Form, Item, Input, CheckBox, Header, Left, Body,Title, Label} from 'native-base';
+import {Container, Button, Content, Spinner, Thumbnail, Form, Item, Input, CheckBox, Header, Left, Body,Title, Label, Right} from 'native-base';
 import { displayTables, getColData, postData, getRowData, triggerZap } from '../connectServerPages/myAPI';
 
 export default class InsertData extends Component{
@@ -47,7 +47,7 @@ export default class InsertData extends Component{
           }
     }
     handlePress =({navigation})=>{
-        this.props.navigation.navigate('DrawerOpen')
+        this.props.navigation.navigate('DrawerOpen',{login_user:this.props.navigation.state.params.login_user})
     }
     // getting Alert message before even pressing select button TO RESOLVE
 handleSelect = async ()=>{
@@ -122,11 +122,13 @@ handleSelect = async ()=>{
             }
             else{
             newData.push(this.state.thisrowData)
-            this.setState({rowData:newData})
-            this.setState({validDetails:true})   
+            this.setState({
+                rowData:newData,
+                validDetails: true
+            })
                 }
             }
-                    }
+           }
          resp = await postData(this.state.pickerlabel,this.state.rowData)
         if(resp.status !== 200){
             if (resp.status === 504) {
@@ -156,7 +158,13 @@ handleSelect = async ()=>{
               }   
           }
     }
+handleLogout = ()    =>
+{
+    this.props.navigation.navigate('loginScreen')
+}
     render(){
+        const {params}  = this.props.navigation.state
+        const login_user = params ? params.login_user : null
         if(this.state.isLoading === true)
         {
             return(<View style={{flex: 1, paddingTop: 20}}>
@@ -174,8 +182,11 @@ handleSelect = async ()=>{
                 </Button>
                 </Left>
                 <Body>
-                    <Title> Welcome Name </Title>
+                    <Title> Welcome {login_user} </Title>
                     </Body>
+                    <Right>
+                        <Button transparent onPress={this.handleLogout}><Text>Logout</Text></Button>
+                    </Right>
                 </Header>
                 <Content style={{margin:20}}>
                 <Picker

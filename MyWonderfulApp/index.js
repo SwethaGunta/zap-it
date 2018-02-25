@@ -1,3 +1,3 @@
 import { AppRegistry } from 'react-native';
-import  SignUpPage from './pages/signUpPage';
-AppRegistry.registerComponent('MyWonderfulApp', () => SignUpPage);
+import  App from './App';
+AppRegistry.registerComponent('MyWonderfulApp', () => App);

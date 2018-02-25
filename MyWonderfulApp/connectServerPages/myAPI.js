@@ -221,21 +221,37 @@ export async function tryLogin(username, password) {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer 1ae2b575387e2f7fe6256ebce78488457bc210a171ec7e11",
+        "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
         "X-Hasura-Role":"admin"    
       }
     };
     let body = {
-      "type": "delete",
-      "args": {
-          "table": "Tables",
-          "where": {
-              "table_name": {
-                  "$eq": tableName
+      "type": "bulk",
+      "args": [
+          {
+              "type": "delete",
+              "args": {
+                  "table": "Data",
+                  "where": {
+                      "table_name": {
+                          "$eq": tableName
+                      }
+                  }
+              }
+          },
+          {
+              "type": "delete",
+              "args": {
+                  "table": "Data",
+                  "where": {
+                      "table_name": {
+                          "$eq": tableName
+                      }
+                  }
               }
           }
-      }
-  };
+      ]
+  }
   requestOptions["body"] = JSON.stringify(body);
   console.log("Data Response from Delete -----------------------");
   try {
@@ -259,27 +275,50 @@ export async function tryLogin(username, password) {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer 1ae2b575387e2f7fe6256ebce78488457bc210a171ec7e11",
+        "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
         "X-Hasura-Role":"admin"    
       }
     };
     let body = {
-      "type": "insert",
-      "args": {
-          "table": "Tables",
-          "objects": [
-              {
-                  "table_name": tableName,
-                  "table_cols": tableCols
+      "type": "bulk",
+      "args": [
+          {
+              "type": "insert",
+              "args": {
+                  "table": "Tables",
+                  "objects": [
+                    {
+                      "table_name": tableName ,
+                      "table_cols" : tableCols
+                      }
+                  ],
+                  "on_conflict": {
+                      "action": "update",
+                      "constraint_on": [
+                          "table_name"
+                      ]
+                  }
               }
-          ],
-          "on_conflict": {
-              "action": "update",
-              "constraint_on": [
-                  "table_name"
-              ]
+          },
+          {
+              "type": "insert",
+              "args": {
+                  "table": "Data",
+                  "objects": [
+                    {
+                      "row_Data" :" ",
+                      "table_name":tableName
+                      }
+                  ],
+                  "on_conflict": {
+                      "action": "update",
+                      "constraint_on": [
+                          "table_name"
+                      ]
+                  }
+              }
           }
-      }
+      ]
   }
 
   requestOptions["body"] = JSON.stringify(body);

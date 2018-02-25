@@ -49,7 +49,7 @@ render(){
     if(this.state.isLoggedIn === true)
     {
       return(<View>
-        {this.props.navigation.navigate('drawer')}
+        {this.props.navigation.navigate('drawer',{login_user:this.state.usernameText})}
         </View>)
       
    //  return <EditTable/>

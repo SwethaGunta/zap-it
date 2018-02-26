@@ -21,7 +21,8 @@ export default class InsertData extends Component{
            isDataInserted: false,
            buttonText: 'Insert',
            zapRows: [],
-           thiszapRow: []
+           thiszapRow: [],
+           auth_token: ''
        }
     }
        async componentWillMount(){
@@ -44,7 +45,7 @@ export default class InsertData extends Component{
           }
     }
     handlePress =({navigation})=>{
-        this.props.navigation.navigate('DrawerOpen',{login_user:this.props.navigation.state.params.login_user})
+        this.props.navigation.navigate('DrawerOpen',{login_user:this.props.navigation.state.params.login_user,auth_token:this.props.navigation.state.params.auth_token})
     }
     // getting Alert message before even pressing select button TO RESOLVE
 handleSelect = async ()=>{
@@ -56,7 +57,7 @@ handleSelect = async ()=>{
         }
     else
     {     
-    let resp = await getColData(this.state.pickerlabel);
+    let resp = await getColData(this.state.pickerlabel,this.state.auth_token);
     if(resp.status !== 200){
         if (resp.status === 504) {
           Alert.alert("Network Error", "Check your internet connection" )
@@ -89,7 +90,7 @@ handleSelect = async ()=>{
         console.log(this.state.thisrowData)
     }
     handleInsertData = async()=>{ 
-        let resp = await getRowData(this.state.pickerlabel)
+        let resp = await getRowData(this.state.pickerlabel,this.state.auth_token)
         if(resp.status !== 200){
             if (resp.status === 504) {
               Alert.alert("Network Error", "Check your internet connection" )
@@ -131,7 +132,7 @@ handleSelect = async ()=>{
             })
                 }
             }
-            resp = await postData(this.state.pickerlabel,this.state.rowData)
+            resp = await postData(this.state.pickerlabel,this.state.rowData,this.state.auth_token)
             if(resp.status !== 200){
                 if (resp.status === 504) {
                   Alert.alert("Network Error", "Check your internet connection" )

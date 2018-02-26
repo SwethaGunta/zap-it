@@ -12,7 +12,9 @@ constructor(){
         //isLoggedIn: false,
         usernameText: '',
         passwordText: '',
-        fontsAreLoaded: false
+        fontsAreLoaded: false,
+        auth_token: '',
+        user: ''
     }
 }
 
@@ -36,8 +38,9 @@ handleLoginPressed = async () => {
         Alert.alert("Error", "Unauthorized, Invalid username or password")      
       }
     } else {
-      // this.setState({...this.state,isLoggedIn:true})  
-      this.props.navigation.navigate('drawer',{login_user:this.state.usernameText})
+      let parsedData = JSON.parse(resp._bodyText);
+      this.setState({auth_token:parsedData.auth_token,user:parsedData.username})
+      this.props.navigation.navigate('drawer',{login_user:this.state.usernameText,auth_token:this.state.auth_token,user:this.state.user})
     }
   }
   handleSignUpPressed = ()=>

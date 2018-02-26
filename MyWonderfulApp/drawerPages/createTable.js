@@ -17,7 +17,9 @@ export default class CreateTable extends Component{
            colNamesAndFeatures: [],
            inp: 'HELLO',
            trial: [],
-           pickerLabel: ''
+           pickerLabel: '',
+           auth_token: '',
+           user: ''
        }
    }
    async componentWillMount(){
@@ -97,7 +99,7 @@ handlePress = ({navigation})=>{
     //     params: {}
     //   })
     //   this.props.navigation.dispatch(navigateAction);
-      this.props.navigation.navigate("DrawerOpen",{login_user:this.props.navigation.state.params.login_user});
+      this.props.navigation.navigate("DrawerOpen",{login_user:this.props.navigation.state.params.login_user,auth_token:this.props.navigation.state.params.auth_token});
 }
 handleLogout = ()    =>
 {
@@ -111,7 +113,7 @@ handleCreateTablePress = async() =>
         Alert.alert("Table Name cannot be empty!")
     }
     else{
-    let resp = await createTable(this.state.tableNameText,this.state.colNamesAndFeatures)
+    let resp = await createTable(this.state.tableNameText,this.state.colNamesAndFeatures,this.state.auth_token)
     if(resp.status !== 200){
         if (resp.status === 504) {
           Alert.alert("Network Error", "Check your internet connection" )
@@ -165,7 +167,8 @@ handleAddColumnPress = ()=>{
                              <Label> Table Name </Label>
                              <Input style={{padding: 10}} value= {this.state.tableNameText} onChangeText={(text)=>this.handleTableNameChange(text)}/>
                             </Item>
-                            
+                        <Text>{this.props.navigation.state.params.auth_token}</Text>    
+                        <Text>{this.props.navigation.state.params.user}</Text>
                             {
                                 this.state.colNamesAndFeatures.map(
                                 (eachColName,index)=>   (

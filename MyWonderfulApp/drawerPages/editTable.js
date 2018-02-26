@@ -14,7 +14,8 @@ export default class EditTable extends Component{
             isLoggedIn: true,
             fontsAreLoaded: false,
             isLoading: true,
-            table_names: []
+            table_names: [],
+            user: ''
         }
     }
     async componentWillMount(){
@@ -41,7 +42,7 @@ export default class EditTable extends Component{
         //     params: {}
         //   })
         //   this.props.navigation.dispatch(navigateAction);
-          this.props.navigation.navigate("DrawerOpen",{login_user:this.props.navigation.state.params.login_user});
+          this.props.navigation.navigate("DrawerOpen",{login_user:this.props.navigation.state.params.login_user,auth_token:this.props.navigation.state.params.auth_token,user:this.props.navigation.state.params.user});
     }
     handleLogout = ()    =>
 {

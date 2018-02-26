@@ -50,7 +50,6 @@ export async function tryLogin(username, password) {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer 1ae2b575387e2f7fe6256ebce78488457bc210a171ec7e11",
         "X-Hasura-Role":"user"    
       }
     };
@@ -83,13 +82,13 @@ export async function tryLogin(username, password) {
   }
 
 
-  export async function getColData(tableName){
+  export async function getColData(tableName,auth){
     console.log('Making Data query for Select');
     let requestOptions = {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer 1ae2b575387e2f7fe6256ebce78488457bc210a171ec7e11",
+        "Authorization":"Bearer "+auth,
         "X-Hasura-Role":"user"    
       }
     };
@@ -125,13 +124,13 @@ export async function tryLogin(username, password) {
   }
   }
  
-  export async function getRowData(tableName){
+  export async function getRowData(tableName,auth){
     console.log('Making Data query for Select');
     let requestOptions = {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer 1ae2b575387e2f7fe6256ebce78488457bc210a171ec7e11",
+        "Authorization":"Bearer "+auth,
         "X-Hasura-Role":"user"    
       }
     };
@@ -168,7 +167,7 @@ export async function tryLogin(username, password) {
   }
  
 
-  export async function postData(tableName, rowData)
+  export async function postData(tableName, rowData,auth)
   {
 
     console.log('Making Data query for Insert');
@@ -176,7 +175,7 @@ export async function tryLogin(username, password) {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer 1ae2b575387e2f7fe6256ebce78488457bc210a171ec7e11",
+        "Authorization":"Bearer "+auth,
         "X-Hasura-Role":"user"    
       }
     };
@@ -214,14 +213,14 @@ export async function tryLogin(username, password) {
   }
   }
 
-  export async function deleteTable(tableName)
+  export async function deleteTable(tableName,auth)
   {
     console.log('Making Data query for Delete');
     let requestOptions = {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
+        "Authorization":"Bearer "+auth,
         "X-Hasura-Role":"user"    
       }
     };
@@ -268,14 +267,14 @@ export async function tryLogin(username, password) {
   }
 
   
-  export async function createTable(tableName,tableCols)
+  export async function createTable(tableName,tableCols,auth)
   {
     console.log('Making Data query for Create');
     let requestOptions = {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
+        "Authorization":"Bearer "+auth,
         "X-Hasura-Role":"user"    
       }
     };
@@ -316,13 +315,12 @@ export async function tryLogin(username, password) {
   {
   
     console.log('Sending Details to Zap');
-    console.log(tableName)
     var body = JSON.stringify({
       "id": "5",
       "name": tableName,
-      "created_on": "10/01/2018",
-      "modified_on": "05/02/2018",
-      "desc":   "Modified table "
+      "created_on": "27/01/2018",
+      "modified_on": "27/02/2018",
+      "desc": "Modified table "+ tableName
          });
 
     var requestOptions = {
@@ -354,8 +352,7 @@ export async function tryLogin(username, password) {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer 9b9f58d1a15ace00931a806310868abe4ccb5f08e864abf3",
-        "X-Hasura-Role":"user"   
+        "X-Hasura-Role": "user"   
       }
     };
     let body = {

@@ -14,6 +14,7 @@ export default class DeleteTable extends Component{
                 pickerlabel: '',
                 table_names: [],
                 isDataInserted: false,
+                auth_token: ''
             }
         }
     }
@@ -44,7 +45,7 @@ export default class DeleteTable extends Component{
         else
             {
         //this.setState({isLoading:true});
-        let resp = await deleteTable(this.state.pickerlabel);
+        let resp = await deleteTable(this.state.pickerlabel,this.state.auth_token);
         if(resp.status !== 200){
             if (resp.status === 504) {
               Alert.alert("Network Error", "Check your internet connection" )
@@ -71,7 +72,7 @@ export default class DeleteTable extends Component{
         }
     }
 handlePress = ({navigation})=>{    
-              this.props.navigation.navigate("DrawerOpen",{login_user:this.props.navigation.state.params.login_user});
+              this.props.navigation.navigate("DrawerOpen",{login_user:this.props.navigation.state.params.login_user,auth_token:this.props.navigation.state.params.auth_token});
         }
 handleLogout = ({navigation})    =>
     {

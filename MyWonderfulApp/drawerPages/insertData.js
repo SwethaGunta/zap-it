@@ -20,13 +20,10 @@ export default class InsertData extends Component{
            thisrowData: [],
            isDataInserted: false,
            buttonText: 'Insert',
-           validDetails: false,
            zapRows: [],
-           thiszapRow: [],
-           triggerZap: false
+           thiszapRow: []
        }
     }
-   
        async componentWillMount(){
         this.setState({...this.state, fontsAreLoaded: true})
        }
@@ -51,7 +48,14 @@ export default class InsertData extends Component{
     }
     // getting Alert message before even pressing select button TO RESOLVE
 handleSelect = async ()=>{
-    this.setState({...this.state,isLoading:true});
+    //this.setState({...this.state,isLoading:true});
+    let pickerValue = this.state.pickerlabel
+    if (pickerValue === 0)
+        {
+            Alert.alert("Please select a value!")
+        }
+    else
+    {     
     let resp = await getColData(this.state.pickerlabel);
     if(resp.status !== 200){
         if (resp.status === 504) {
@@ -76,6 +80,7 @@ handleSelect = async ()=>{
         this.setState({isLoading:false,thisrowData:thisrowData});
       }
     }
+}
     handleInsertIntoArray = (key,text) =>{
        console.log("Key" + key + "Text" + text)
        let newData = this.state.thisrowData
@@ -97,6 +102,7 @@ handleSelect = async ()=>{
             if((this.state.rowData.length) <= 0)
             {
                 let thisrowData = this.state.thisrowData
+                JSON.stringify(thisrowData)
                 this.setState({rowData:thisrowData})
             }
             else
@@ -117,46 +123,38 @@ handleSelect = async ()=>{
             if((bool[0].valueOf() === true)  || (this.state.thisrowData.length <= 0))
             {
                 Alert.alert("Please select a table and insert valid data!")
-                this.setState({validDetails: false})
-                this.setState({triggerZap: false})
             }
             else{
             newData.push(this.state.thisrowData)
             this.setState({
-                rowData:newData,
-                validDetails: true
+                rowData:newData
             })
                 }
             }
-           }
-         resp = await postData(this.state.pickerlabel,this.state.rowData)
-        if(resp.status !== 200){
-            if (resp.status === 504) {
-              Alert.alert("Network Error", "Check your internet connection" )
-            } else {
-              Alert.alert("Error", "Failed to Insert Data")      
-            }
-          } else {
-              if(this.state.validDetails)
+            resp = await postData(this.state.pickerlabel,this.state.rowData)
+            if(resp.status !== 200){
+                if (resp.status === 504) {
+                  Alert.alert("Network Error", "Check your internet connection" )
+                } else {
+                  Alert.alert("Error", "Failed to Insert Data")      
+                }
+              } else {
+                    Alert.alert("One row affected")
+                    let resp = await triggerZap(this.state.pickerlabel)
+                if(resp.status !== 200){
+                if (resp.status === 504) {
+                  Alert.alert("Network Error", "Check your internet connection" )
+                } else {
+                  Alert.alert("Error", "Zap error!")      
+                }
+              } else 
               {
-                Alert.alert("One row affected")
-                
-                let resp = await triggerZap(this.state.pickerlabel)
-        if(resp.status !== 200){
-            if (resp.status === 504) {
-              Alert.alert("Network Error", "Check your internet connection" )
-            } else {
-              Alert.alert("Error", "Zap error!")      
-            }
-          } else 
-          {
-            Alert.alert("Data Saved and Zap triggered!")
-            this.setState({triggerZap: false})
-            }
-              this.setState({isDataInserted:true})
-              this.setState({buttonText: 'Insert Again'})
-              }   
-          }
+                Alert.alert("Data Saved and Zap triggered!")
+                }
+                  this.setState({isDataInserted:true})
+                  this.setState({buttonText: 'Insert Again'})
+              }
+           }
     }
 handleLogout = ()    =>
 {
@@ -191,7 +189,7 @@ handleLogout = ()    =>
                 <Content style={{margin:20}}>
                 <Picker
                     selectedValue={this.state.pickerlabel}
-                    onValueChange={(itemValue, itemIndex) => {if (itemValue!=0){this.setState({pickerlabel: itemValue})}else{Alert.alert("Please select a value!")}   }        }>
+                    onValueChange={(itemValue, itemIndex) => this.setState({pickerlabel:itemValue})}>
                     <Picker.Item label="Please select the table" value="0"/>
                     
                     {   this.state.table_names.map((table, key)=>(
@@ -202,9 +200,9 @@ handleLogout = ()    =>
                 </Picker>
                 
                 <Button style={{alignSelf:'center'}}onPress={this.handleSelect}><Text> Select </Text></Button>
-                 <Text style={{ flex: 1, justifyContent: 'center',  alignContent: 'center', alignSelf:'center'}}>{this.state.pickerlabel}</Text>
-                {  
-                this.state.cols_of_sel_tab.map(
+                 {/* <Text style={{ flex: 1, justifyContent: 'center',  alignContent: 'center', alignSelf:'center'}}>{this.state.pickerlabel}</Text> */}
+                    {  
+                    this.state.cols_of_sel_tab.map(
                     (col_of_sel) =>( col_of_sel.table_cols.map(
                         (cols,key) => (
                             //console.log("HI I AM HERE" + this.state.thisrowData),

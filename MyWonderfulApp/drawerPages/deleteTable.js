@@ -35,23 +35,14 @@ export default class DeleteTable extends Component{
             this.setState({...this.state,table_names:parsedData})
           }
     }
-    // Problem here
-    async componentDidUpdate(){
-        let  resp = await displayTables();
-        if(resp.status !== 200){
-            if (resp.status === 504) {
-              Alert.alert("Network Error", "Check your internet connection" )
-            } else {
-              Alert.alert("Error", "You do not have delete permissions")      
-            }
-          } else {
-            this.setState({...this.state,isLoading:false});
-            console.log("Response is: " + resp._bodyText);
-            let parsedData = JSON.parse(resp._bodyText);
-            this.setState({...this.state,table_names:parsedData})
-          }
-    }
     handleDelete = async ()=>{
+        let pickerValue = this.state.pickerlabel
+        if(pickerValue === 0)
+            {
+               Alert.alert("Please select a Table to delete!")
+            }
+        else
+            {
         //this.setState({isLoading:true});
         let resp = await deleteTable(this.state.pickerlabel);
         if(resp.status !== 200){
@@ -61,16 +52,25 @@ export default class DeleteTable extends Component{
               Alert.alert("Error", "Data not available")      
             }
           } else {
-            Alert.alert("Table " + this.state.pickerlabel + "successfully deleted")
-            this.setState({isLoading:false})
+            Alert.alert("Table " + this.state.pickerlabel + " successfully deleted")
+           // this.setState({isLoading:false})
+           resp1 = await displayTables();
+        if(resp1.status !== 200){
+            if (resp1.status === 504) {
+              Alert.alert("Network Error", "Check your internet connection" )
+            } else {
+              Alert.alert("Error", "You do not have delete permissions")      
+            }
+          } else {
+        
+            console.log("Response is: " + resp1._bodyText);
+            let parsedData = JSON.parse(resp1._bodyText);
+            this.setState({isLoading:false,table_names:parsedData})
+          }
           }
         }
-        handlePress = ({navigation})=>{    
-            //   const navigateAction = NavigationActions.navigate({
-            //     routeName: "DrawerOpen",
-            //     params: {}
-            //   })
-            //   this.props.navigation.dispatch(navigateAction);
+    }
+handlePress = ({navigation})=>{    
               this.props.navigation.navigate("DrawerOpen",{login_user:this.props.navigation.state.params.login_user});
         }
 handleLogout = ({navigation})    =>
@@ -106,7 +106,7 @@ render(){
                 <Content>
                 <Picker
                     selectedValue={this.state.pickerlabel}
-                    onValueChange={(itemValue, itemIndex) => {if (itemValue!=0){this.setState({pickerlabel: itemValue})}else{Alert.alert("Please select a value!")}       }        }>
+                    onValueChange={(itemValue, itemIndex) => this.setState({pickerlabel:itemValue})}>
                     <Picker.Item label="Please select the table" value="0"/>
                     
                     {   this.state.table_names.map((table, key)=>(
@@ -114,7 +114,6 @@ render(){
                         )
                     }
                 </Picker>
-                <Text>{this.state.pickerlabel}</Text>
                 <Button style={{alignSelf:'center'}} onPress={this.handleDelete}><Text>Delete</Text></Button>
                   </Content>
                   </Container>

@@ -6,15 +6,10 @@ import {Container, Header, Left, Right, Body, Content, Form, Item, Label, Input,
 import EditTable from '../drawerPages/editTable';
 
 export default class Login extends Component{
-  // static navigationOptions={
-  //   title: 'Login',
-  //   headerStyle: {backgroundColor: 'navy'},
-  //   headerTitleStyle: {color: 'white'}
-  // }
 constructor(){
     super();
     this.state = {
-        isLoggedIn: false,
+        //isLoggedIn: false,
         usernameText: '',
         passwordText: '',
         fontsAreLoaded: false
@@ -41,19 +36,24 @@ handleLoginPressed = async () => {
         Alert.alert("Error", "Unauthorized, Invalid username or password")      
       }
     } else {
-      this.setState({...this.state,isLoggedIn:true})  
+      // this.setState({...this.state,isLoggedIn:true})  
+      this.props.navigation.navigate('drawer',{login_user:this.state.usernameText})
     }
+  }
+  handleSignUpPressed = ()=>
+  {
+    this.props.navigation.navigate('signUp')
   }
 render(){
   if(this.state.fontsAreLoaded === true){
-    if(this.state.isLoggedIn === true)
-    {
-      return(<View>
-        {this.props.navigation.navigate('drawer',{login_user:this.state.usernameText})}
-        </View>)
+  //   if(this.state.isLoggedIn === true)
+  //   {
+  //     return(<View>
+  //       {this.props.navigation.navigate('drawer',{login_user:this.state.usernameText})}
+  //       </View>)
       
-   //  return <EditTable/>
-    }
+  //  //  return <EditTable/>
+  //   }
     return(
         <Container>
           <Header>
@@ -75,7 +75,7 @@ render(){
               </Item>
             </Form>
             <View style = {{height:10}} />
-            <Button block onPress={this.handleSignupPressed} >
+            <Button block onPress={this.handleSignUpPressed} >
               <Text> Sign up </Text>
             </Button>
             <View style = {{height:10}} />

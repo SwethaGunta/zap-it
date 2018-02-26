@@ -8,6 +8,7 @@ import CreateTable from './drawerPages/createTable';
 import EditTable from './drawerPages/editTable';
 import InsertData from './drawerPages/insertData';
 import DeleteTable from './drawerPages/deleteTable';
+import SignUpPage from './pages/signUpPage';
 
 
 const DrawerScreens = DrawerNavigator({
@@ -23,7 +24,8 @@ createTable: {screen: CreateTable},
 
 export const StackScreens = StackNavigator({
   loginScreen : {screen: Login},
-  drawer: {screen: DrawerScreens}
+  drawer: {screen: DrawerScreens},
+  signUp: {screen: SignUpPage}
   },
 {
   initialRouteName: 'loginScreen',

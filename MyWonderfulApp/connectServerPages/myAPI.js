@@ -51,7 +51,7 @@ export async function tryLogin(username, password) {
       "headers": {
         "Content-Type":"application/json",
         "Authorization":"Bearer 1ae2b575387e2f7fe6256ebce78488457bc210a171ec7e11",
-        "X-Hasura-Role":"admin"    
+        "X-Hasura-Role":"user"    
       }
     };
 
@@ -90,7 +90,7 @@ export async function tryLogin(username, password) {
       "headers": {
         "Content-Type":"application/json",
         "Authorization":"Bearer 1ae2b575387e2f7fe6256ebce78488457bc210a171ec7e11",
-        "X-Hasura-Role":"admin"    
+        "X-Hasura-Role":"user"    
       }
     };
     let body = {
@@ -132,7 +132,7 @@ export async function tryLogin(username, password) {
       "headers": {
         "Content-Type":"application/json",
         "Authorization":"Bearer 1ae2b575387e2f7fe6256ebce78488457bc210a171ec7e11",
-        "X-Hasura-Role":"admin"    
+        "X-Hasura-Role":"user"    
       }
     };
     let body = {
@@ -177,7 +177,7 @@ export async function tryLogin(username, password) {
       "headers": {
         "Content-Type":"application/json",
         "Authorization":"Bearer 1ae2b575387e2f7fe6256ebce78488457bc210a171ec7e11",
-        "X-Hasura-Role":"admin"    
+        "X-Hasura-Role":"user"    
       }
     };
     let body = {
@@ -222,7 +222,7 @@ export async function tryLogin(username, password) {
       "headers": {
         "Content-Type":"application/json",
         "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
-        "X-Hasura-Role":"admin"    
+        "X-Hasura-Role":"user"    
       }
     };
     let body = {
@@ -242,7 +242,7 @@ export async function tryLogin(username, password) {
           {
               "type": "delete",
               "args": {
-                  "table": "Data",
+                  "table": "Tables",
                   "where": {
                       "table_name": {
                           "$eq": tableName
@@ -276,51 +276,27 @@ export async function tryLogin(username, password) {
       "headers": {
         "Content-Type":"application/json",
         "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
-        "X-Hasura-Role":"admin"    
+        "X-Hasura-Role":"user"    
       }
     };
     let body = {
-      "type": "bulk",
-      "args": [
-          {
-              "type": "insert",
-              "args": {
-                  "table": "Tables",
-                  "objects": [
-                    {
-                      "table_name": tableName ,
-                      "table_cols" : tableCols
-                      }
-                  ],
-                  "on_conflict": {
-                      "action": "update",
-                      "constraint_on": [
-                          "table_name"
-                      ]
-                  }
+      "type": "insert",
+      "args": {
+          "table": "Tables",
+          "objects": [
+              {
+                  "table_name": tableName,
+                  "table_cols": tableCols
               }
-          },
-          {
-              "type": "insert",
-              "args": {
-                  "table": "Data",
-                  "objects": [
-                    {
-                      "row_Data" :" ",
-                      "table_name":tableName
-                      }
-                  ],
-                  "on_conflict": {
-                      "action": "update",
-                      "constraint_on": [
-                          "table_name"
-                      ]
-                  }
-              }
+          ],
+          "on_conflict": {
+              "action": "update",
+              "constraint_on": [
+                  "table_name"
+              ]
           }
-      ]
+      }
   }
-
   requestOptions["body"] = JSON.stringify(body);
   console.log("Data Response from Create -----------------------");
   try {
@@ -378,8 +354,8 @@ export async function tryLogin(username, password) {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer 1ae2b575387e2f7fe6256ebce78488457bc210a171ec7e11",
-        "X-Hasura-Role":"admin"    
+        "Authorization":"Bearer 9b9f58d1a15ace00931a806310868abe4ccb5f08e864abf3",
+        "X-Hasura-Role":"user"   
       }
     };
     let body = {

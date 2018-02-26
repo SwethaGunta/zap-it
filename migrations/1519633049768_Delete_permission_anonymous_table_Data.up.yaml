@@ -1,0 +1,4 @@
+- args:
+    role: anonymous
+    table: Data
+  type: drop_insert_permission

@@ -1,0 +1,9 @@
+- args:
+    permission:
+      columns:
+      - table_cols
+      - table_name
+      filter: {}
+    role: anonymous
+    table: Tables
+  type: create_select_permission

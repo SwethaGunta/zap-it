@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Picker, Dimensions, Switch, Alert, StyleSheet} from 'react-native';
+import {View, Text, Picker, Dimensions, Switch, Alert, StyleSheet, AsyncStorage} from 'react-native';
 import {Container, Button, Content, Spinner, Thumbnail, Form, Item, Input, CheckBox, Header, Left, Body,Title, Label, Right} from 'native-base';
 import { displayTables, getColData, postData, getRowData, triggerZap } from '../connectServerPages/myAPI';
 
@@ -89,6 +89,7 @@ handleSelect = async ()=>{
         console.log(this.state.thisrowData)
     }
     handleInsertData = async()=>{ 
+        let authToken = await AsyncStorage.getItem('HASURA_AUTH_TOKEN')
         let resp = await getRowData(this.state.pickerlabel)
         if(resp.status !== 200){
             if (resp.status === 504) {
@@ -134,7 +135,7 @@ handleSelect = async ()=>{
             })
                 }
             }
-            resp = await postData(this.state.pickerlabel,this.state.rowData)
+            resp = await postData(this.state.pickerlabel,this.state.rowData, authToken)
             if(resp.status !== 200){
                 if (resp.status === 504) {
                   Alert.alert("Network Error", "Check your internet connection" )

@@ -1,0 +1,7 @@
+- args:
+    permission:
+      columns: []
+      filter: {}
+    role: anonymous
+    table: Data
+  type: create_select_permission

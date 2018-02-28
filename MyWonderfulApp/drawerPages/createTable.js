@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Picker, Dimensions, Switch, Alert, StyleSheet} from 'react-native';
+import {View, Text, Picker, Dimensions, Switch, Alert, StyleSheet, AsyncStorage} from 'react-native';
 import {Container, Button, Content, Spinner, Thumbnail, Right, Form, Item, Input, CheckBox, Header, Left, Body,Title, Label} from 'native-base';
 import { createTable } from '../connectServerPages/myAPI';
 
@@ -16,7 +16,8 @@ export default class CreateTable extends Component{
            tableNameText: '',
            colNamesAndFeatures: [],
            inp: 'HELLO',
-           pickerLabel: ''
+           pickerLabel: '',
+           authToken: ''
        }
    }
    async componentWillMount(){
@@ -100,12 +101,14 @@ handleLogout = ()    =>
 handleCreateTablePress = async() =>
 {
     let tableName = this.state.tableNameText
+    let authToken = await AsyncStorage.getItem('HASURA_AUTH_TOKEN')
+    authToken = authToken.toString()
     if(tableName === '' || !(isNaN(tableName)))
     {
         Alert.alert("Table Name cannot be empty!")
     }
     else{
-    let resp = await createTable(this.state.tableNameText,this.state.colNamesAndFeatures)
+    let resp = await createTable(this.state.tableNameText,this.state.colNamesAndFeatures,authToken)
     if(resp.status !== 200){
         if (resp.status === 504) {
           Alert.alert("Network Error", "Check your internet connection" )
@@ -169,7 +172,6 @@ handleAddColumnPress = ()=>{
                                     
                                                                                                                
                                 ))}
-
                         <View style={{flexDirection:'row',alignItems:'center',padding:10}}>
                         <Button onPress={this.handleCreateTablePress}><Text> Create Table </Text></Button>
                         <Button onPress={this.handleAddColumnPress}><Text> Add Column </Text></Button>

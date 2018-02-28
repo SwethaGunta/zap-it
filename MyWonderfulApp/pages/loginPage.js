@@ -1,7 +1,7 @@
 
 import React, {Component} from 'react';
 import { tryLogin } from '../connectServerPages/myAPI';
-import {View, Text, Alert} from 'react-native';
+import {View, Text, Alert, AsyncStorage} from 'react-native';
 import {Container, Header, Left, Right, Body, Content, Form, Item, Label, Input, Button, Title} from 'native-base';
 import EditTable from '../drawerPages/editTable';
 
@@ -39,7 +39,8 @@ handleLoginPressed = async () => {
     } else {
       let parsedData = JSON.parse(resp._bodyText);
       this.setState({auth_token:parsedData.auth_token,user:parsedData.username})
-      this.props.navigation.navigate('drawer',{login_user:this.state.usernameText,auth_token:this.state.auth_token})
+      AsyncStorage.setItem('HASURA_AUTH_TOKEN',parsedData.auth_token)
+      this.props.navigation.navigate('drawer',{login_user:this.state.usernameText})
     }
   }
   handleSignUpPressed = ()=>

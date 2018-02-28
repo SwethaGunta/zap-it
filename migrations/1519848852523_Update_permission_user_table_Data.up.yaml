@@ -1,0 +1,14 @@
+- args:
+    role: user
+    table: Data
+  type: drop_update_permission
+- args:
+    permission:
+      columns:
+      - row_Data
+      - table_name
+      filter:
+        table_name: {}
+    role: user
+    table: Data
+  type: create_update_permission

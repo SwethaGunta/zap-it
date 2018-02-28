@@ -49,8 +49,8 @@ export async function tryLogin(username, password) {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
-        "X-Hasura-Role":"admin"    
+         "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
+         "X-Hasura-Role":"admin"
       }
     };
 
@@ -88,8 +88,8 @@ export async function tryLogin(username, password) {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
-        "X-Hasura-Role":"admin"    
+    "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
+         "X-Hasura-Role":"admin"
       }
     };
     let body = {
@@ -131,7 +131,7 @@ export async function tryLogin(username, password) {
       "headers": {
         "Content-Type":"application/json",
         "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
-        "X-Hasura-Role":"admin"    
+          "X-Hasura-Role":"admin"    
       }
     };
     let body = {
@@ -150,7 +150,6 @@ export async function tryLogin(username, password) {
   };
 
   requestOptions["body"] = JSON.stringify(body);
-  
   console.log("Data Response from Select ---------------------");
   
   try {
@@ -175,8 +174,9 @@ export async function tryLogin(username, password) {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
-        "X-Hasura-Role":"admin"    
+      "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
+          "X-Hasura-Role": "admin"
+        
       }
     };
     let body = {
@@ -221,7 +221,7 @@ export async function tryLogin(username, password) {
       "headers": {
         "Content-Type":"application/json",
         "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
-        "X-Hasura-Role":"admin"    
+          "X-Hasura-Role": "admin"
       }
     };
     let body = {
@@ -275,7 +275,7 @@ export async function tryLogin(username, password) {
       "headers": {
         "Content-Type":"application/json",
         "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
-        "X-Hasura-Role":"admin"
+          "X-Hasura-Role": "admin"
       }
     };
     let body = {

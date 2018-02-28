@@ -1,0 +1,13 @@
+- args:
+    role: anonymous
+    table: Data
+  type: drop_select_permission
+- args:
+    permission:
+      columns:
+      - row_Data
+      - table_name
+      filter: {}
+    role: anonymous
+    table: Data
+  type: create_select_permission

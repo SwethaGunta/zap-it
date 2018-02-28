@@ -21,8 +21,7 @@ export default class InsertData extends Component{
            isDataInserted: false,
            buttonText: 'Insert',
            zapRows: [],
-           thiszapRow: [],
-           auth_token: ''
+           thiszapRow: []
        }
     }
        async componentWillMount(){
@@ -57,7 +56,7 @@ handleSelect = async ()=>{
         }
     else
     {     
-    let resp = await getColData(this.state.pickerlabel,this.state.auth_token);
+    let resp = await getColData(this.state.pickerlabel);
     if(resp.status !== 200){
         if (resp.status === 504) {
           Alert.alert("Network Error", "Check your internet connection" )
@@ -90,7 +89,7 @@ handleSelect = async ()=>{
         console.log(this.state.thisrowData)
     }
     handleInsertData = async()=>{ 
-        let resp = await getRowData(this.state.pickerlabel,this.state.auth_token)
+        let resp = await getRowData(this.state.pickerlabel)
         if(resp.status !== 200){
             if (resp.status === 504) {
               Alert.alert("Network Error", "Check your internet connection" )
@@ -102,8 +101,11 @@ handleSelect = async ()=>{
              this.setState({rowData:parsedData})
             if((this.state.rowData.length) <= 0)
             {
-                let thisrowData = this.state.thisrowData
-                JSON.stringify(thisrowData)
+                let thisrowData =[]
+                // = this.state.thisrowData
+                // added the below line
+                thisrowData.push(this.state.thisrowData)
+                //JSON.stringify(thisrowData)
                 this.setState({rowData:thisrowData})
             }
             else
@@ -132,7 +134,7 @@ handleSelect = async ()=>{
             })
                 }
             }
-            resp = await postData(this.state.pickerlabel,this.state.rowData,this.state.auth_token)
+            resp = await postData(this.state.pickerlabel,this.state.rowData)
             if(resp.status !== 200){
                 if (resp.status === 504) {
                   Alert.alert("Network Error", "Check your internet connection" )

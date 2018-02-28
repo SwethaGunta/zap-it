@@ -16,10 +16,7 @@ export default class CreateTable extends Component{
            tableNameText: '',
            colNamesAndFeatures: [],
            inp: 'HELLO',
-           trial: [],
-           pickerLabel: '',
-           auth_token: '',
-           user: ''
+           pickerLabel: ''
        }
    }
    async componentWillMount(){
@@ -94,12 +91,7 @@ handleColNameChange = (text,index) => {
 //     this.setState({colNamesAndFeatures:newcolNamesAndFeatures})
 // }
 handlePress = ({navigation})=>{    
-    //   const navigateAction = NavigationActions.navigate({
-    //     routeName: "DrawerOpen",
-    //     params: {}
-    //   })
-    //   this.props.navigation.dispatch(navigateAction);
-      this.props.navigation.navigate("DrawerOpen",{login_user:this.props.navigation.state.params.login_user,auth_token:this.props.navigation.state.params.auth_token});
+      this.props.navigation.navigate("DrawerOpen",{login_user:this.props.navigation.state.params.login_user,auth_token:this.props.navigation.state.params.auth_token,user:this.props.navigation.state.params.user});
 }
 handleLogout = ()    =>
 {
@@ -113,7 +105,7 @@ handleCreateTablePress = async() =>
         Alert.alert("Table Name cannot be empty!")
     }
     else{
-    let resp = await createTable(this.state.tableNameText,this.state.colNamesAndFeatures,this.state.auth_token)
+    let resp = await createTable(this.state.tableNameText,this.state.colNamesAndFeatures)
     if(resp.status !== 200){
         if (resp.status === 504) {
           Alert.alert("Network Error", "Check your internet connection" )
@@ -133,6 +125,7 @@ handleAddColumnPress = ()=>{
     render(){
         const {params}  = this.props.navigation.state
         const login_user = params ? params.login_user : null
+        const auth_token = params ? params.auth_token : null
         if(this.state.isLoading === true)
         {
             return(<View style={{flex: 1, paddingTop: 20}}>
@@ -167,8 +160,6 @@ handleAddColumnPress = ()=>{
                              <Label> Table Name </Label>
                              <Input style={{padding: 10}} value= {this.state.tableNameText} onChangeText={(text)=>this.handleTableNameChange(text)}/>
                             </Item>
-                        <Text>{this.props.navigation.state.params.auth_token}</Text>    
-                        <Text>{this.props.navigation.state.params.user}</Text>
                             {
                                 this.state.colNamesAndFeatures.map(
                                 (eachColName,index)=>   (

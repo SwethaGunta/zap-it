@@ -1,6 +1,5 @@
 const clusterName = "bungalow55"
 
-
 const dataUrl = "https://data." + clusterName + ".hasura-app.io/v1/query";
 const loginUrl = "https://auth." + clusterName + ".hasura-app.io/v1/login";
 const signupUrl = "https://auth." + clusterName + ".hasura-app.io/v1/signup";
@@ -50,7 +49,8 @@ export async function tryLogin(username, password) {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "X-Hasura-Role":"user"    
+        "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
+        "X-Hasura-Role":"admin"    
       }
     };
 
@@ -82,14 +82,14 @@ export async function tryLogin(username, password) {
   }
 
 
-  export async function getColData(tableName,auth){
+  export async function getColData(tableName){
     console.log('Making Data query for Select');
     let requestOptions = {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer "+auth,
-        "X-Hasura-Role":"user"    
+        "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
+        "X-Hasura-Role":"admin"    
       }
     };
     let body = {
@@ -124,14 +124,14 @@ export async function tryLogin(username, password) {
   }
   }
  
-  export async function getRowData(tableName,auth){
+  export async function getRowData(tableName){
     console.log('Making Data query for Select');
     let requestOptions = {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer "+auth,
-        "X-Hasura-Role":"user"    
+        "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
+        "X-Hasura-Role":"admin"    
       }
     };
     let body = {
@@ -167,7 +167,7 @@ export async function tryLogin(username, password) {
   }
  
 
-  export async function postData(tableName, rowData,auth)
+  export async function postData(tableName, rowData)
   {
 
     console.log('Making Data query for Insert');
@@ -175,8 +175,8 @@ export async function tryLogin(username, password) {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer "+auth,
-        "X-Hasura-Role":"user"    
+        "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
+        "X-Hasura-Role":"admin"    
       }
     };
     let body = {
@@ -213,15 +213,15 @@ export async function tryLogin(username, password) {
   }
   }
 
-  export async function deleteTable(tableName,auth)
+  export async function deleteTable(tableName)
   {
     console.log('Making Data query for Delete');
     let requestOptions = {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer "+auth,
-        "X-Hasura-Role":"user"    
+        "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
+        "X-Hasura-Role":"admin"    
       }
     };
     let body = {
@@ -267,15 +267,15 @@ export async function tryLogin(username, password) {
   }
 
   
-  export async function createTable(tableName,tableCols,auth)
+  export async function createTable(tableName, tableCols)
   {
     console.log('Making Data query for Create');
     let requestOptions = {
       "method": "POST",
       "headers": {
         "Content-Type":"application/json",
-        "Authorization":"Bearer "+auth,
-        "X-Hasura-Role":"user"    
+        "Authorization":"Bearer f2612f90394e9b2c22c8fdf3d857c0da3ee26d955bf42da2",
+        "X-Hasura-Role":"admin"
       }
     };
     let body = {

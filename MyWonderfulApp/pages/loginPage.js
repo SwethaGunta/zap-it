@@ -13,8 +13,7 @@ constructor(){
         usernameText: '',
         passwordText: '',
         fontsAreLoaded: false,
-        auth_token: '',
-        user: ''
+        auth_token: ''
     }
 }
 
@@ -40,7 +39,7 @@ handleLoginPressed = async () => {
     } else {
       let parsedData = JSON.parse(resp._bodyText);
       this.setState({auth_token:parsedData.auth_token,user:parsedData.username})
-      this.props.navigation.navigate('drawer',{login_user:this.state.usernameText,auth_token:this.state.auth_token,user:this.state.user})
+      this.props.navigation.navigate('drawer',{login_user:this.state.usernameText,auth_token:this.state.auth_token})
     }
   }
   handleSignUpPressed = ()=>
@@ -49,14 +48,6 @@ handleLoginPressed = async () => {
   }
 render(){
   if(this.state.fontsAreLoaded === true){
-  //   if(this.state.isLoggedIn === true)
-  //   {
-  //     return(<View>
-  //       {this.props.navigation.navigate('drawer',{login_user:this.state.usernameText})}
-  //       </View>)
-      
-  //  //  return <EditTable/>
-  //   }
     return(
         <Container>
           <Header>

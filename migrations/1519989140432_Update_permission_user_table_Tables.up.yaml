@@ -1,0 +1,11 @@
+- args:
+    role: user
+    table: Tables
+  type: drop_insert_permission
+- args:
+    permission:
+      allow_upsert: true
+      check: {}
+    role: user
+    table: Tables
+  type: create_insert_permission

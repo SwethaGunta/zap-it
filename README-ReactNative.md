@@ -45,7 +45,8 @@ The microservices folder contains the microservice named "app" on which the proj
 
 ================================================================
 
+# Demo of the app
 
-########....EXPLORE THE APP AND RATE .... T33PF1......###########
+[![Watch the video](https://filestore.hasura.io/v1/file/46ad0403-d2af-43c6-ab60-6fc906d4a79f)](https://www.youtube.com/embed/8lYMxr2Ebic)
 
 ================================================================
